@@ -17,7 +17,15 @@
             var ilkom = {lat:-5.367284,lng:105.244935};
             var map=new google.maps.Map(document.getElementById('map'),{zoom:13,center:ilkom});
             console.log(map);
+            var infowindow = new google.maps.InfoWindow();
+            var contentString = '<h3>Jurusan Ilmu Komputer</h3><hr>'+
+                                 '<p><a href="http://ilkom.unila.ac.id" target="blank">http://ilkom.unila.ac.id</a>';
+            infowindow.setContent(contentString);
+
             var marker=new google.maps.Marker({position:ilkom,map:map});
+            marker.addListener('click',function(){
+                infowindow.open(map,marker);
+            });
             console.log(marker);
         }
     </script>
