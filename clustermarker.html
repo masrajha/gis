@@ -30,7 +30,8 @@
             var markerCluster = new MarkerClusterer(map, markers,
                 {imagePath: 'images/m'});
         
-
+            var d = markerCluster.distanceBetweenPoints_(markers[2].getPosition(),markers[4].getPosition());
+            console.log(markerCluster.getCalculator());
             // var marker=new google.maps.Marker({position:center,map:map});
             // console.log(marker);
         }

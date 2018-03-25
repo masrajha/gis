@@ -27,6 +27,12 @@
                 infowindow.open(map,marker);
             });
             console.log(marker);
+            google.maps.event.addListener(map, "click", function (e) {
+                //lat and lng is available in e object
+                var latLng = e.latLng;
+                marker.setPosition(latLng);
+                console.log(marker.getPosition().toString());
+                });
         }
     </script>
     <script async defer 
