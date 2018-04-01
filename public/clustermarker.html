@@ -1,0 +1,104 @@
+<html>
+    <head>
+        <title>Latihan Google Map API</title>
+        <style>
+            #map {
+                background-color: gray;
+                width: 100%;
+                height: 400px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="map"></div>
+    </body>
+    <script>
+        var lastClick=null;
+        function initMap(){
+            //Inisialiasi MAP
+            var center = {lat: -5.404383638035373, lng: 105.25522953786356};
+            var map=new google.maps.Map(document.getElementById('map'),{zoom:11,center:center});
+            // console.log(map);
+            loadMarker(map);    //memanggil fungsi loadMarker
+        }
+        
+        function loadMarker(map){
+            //deklarasi sting label
+            var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+            //menggunakan fungsi array map
+            //lebih lanjut baca referensi https://www.w3schools.com/jsref/jsref_map.asp
+            var markers = locations.map(function(location, i) {
+                // console.log(i);
+                //instansiasi marker dengan memasukan option position dan label
+                var marker = new google.maps.Marker({
+                    position: location.coord,
+                    label: labels[i % labels.length]
+                });
+                
+                //instansiasi infowindow
+                var infowindow = new google.maps.InfoWindow();
+                
+                    //menambahkan event listener click untuk setiap marker
+                    marker.addListener('click',function(event){
+                    if (lastClick) lastClick.close();
+                    console.log(lastClick);
+                    info = location.info.replace("<h1>","<h1>#"+i+" ");
+                    infowindow.setContent(info);
+                    infowindow.open(map,marker);
+                    lastClick=infowindow;
+                }
+                );
+                
+                return marker;
+                }
+                ); 
+            // console.log(locations);
+            // console.log(markers);
+            //membuat marker cluster referensi https://googlemaps.github.io/js-marker-clusterer/docs/reference.html
+            var markerCluster = new MarkerClusterer(map, markers,
+                {imagePath: 'images/m'});
+        
+            var d = markerCluster.distanceBetweenPoints_(markers[2].getPosition(),markers[4].getPosition());
+            console.log(markerCluster.getCalculator());
+            // var marker=new google.maps.Marker({position:center,map:map});
+            // console.log(marker);
+        }
+        
+        //data geolokasi dalam bentuk array objek
+        var locations = [
+        {coord:{lat: -5.3464327784291426,lng:  105.23017212158197}, info:'<div class="info"><h1>Title Marker</h1><hr><p>ini adalah keterangan dari marker<p>Informasi lebih lanjut...</div>'},
+        {coord:{lat: -5.359934880167229,lng:  105.22467895751947}, info:'<div class="info"><h1>Title Marker</h1><hr><p>ini adalah keterangan dari marker<p>Informasi lebih lanjut...</div>'},
+        {coord:{lat: -5.374120311035096,lng:  105.23309036499018}, info:'<div class="info"><h1>Title Marker</h1><hr><p>ini adalah keterangan dari marker<p>Informasi lebih lanjut...</div>'},
+        {coord:{lat: -5.417187302183397,lng:  105.26175781494135}, info:'<div class="info"><h1>Title Marker</h1><hr><p>ini adalah keterangan dari marker<p>Informasi lebih lanjut...</div>'},
+        {coord:{lat: -5.421972334380853,lng:  105.26828094726557}, info:'<div class="info"><h1>Title Marker</h1><hr><p>ini adalah keterangan dari marker<p>Informasi lebih lanjut...</div>'},
+        {coord:{lat: -5.42163054762423,lng:  105.25557800537104}, info:'<div class="info"><h1>Title Marker</h1><hr><p>ini adalah keterangan dari marker<p>Informasi lebih lanjut...</div>'},
+        {coord:{lat: -5.415820143164951,lng:  105.24596496826166}, info:'<div class="info"><h1>Title Marker</h1><hr><p>ini adalah keterangan dari marker<p>Informasi lebih lanjut...</div>'},
+        {coord:{lat: -5.37651300177438,lng:  105.2919702172851}, info:'<div class="info"><h1>Title Marker</h1><hr><p>ini adalah keterangan dari marker<p>Informasi lebih lanjut...</div>'},
+        {coord:{lat: -5.3597639693508965,lng:  105.29712005859369}, info:'<div class="info"><h1>Title Marker</h1><hr><p>ini adalah keterangan dari marker<p>Informasi lebih lanjut...</div>'},
+        {coord:{lat: -5.364207635026028,lng:  105.28785034423822}, info:'<div class="info"><h1>Title Marker</h1><hr><p>ini adalah keterangan dari marker<p>Informasi lebih lanjut...</div>'},
+        {coord:{lat: -5.39257796728008,lng:  105.21403595214838}, info:'<div class="info"><h1>Title Marker</h1><hr><p>ini adalah keterangan dari marker<p>Informasi lebih lanjut...</div>'},
+        {coord:{lat: -5.396337791468567,lng:  105.21163269287104}, info:'<div class="info"><h1>Title Marker</h1><hr><p>ini adalah keterangan dari marker<p>Informasi lebih lanjut...</div>'},
+        {coord:{lat: -5.402490180770178,lng:  105.20304962402338}, info:'<div class="info"><h1>Title Marker</h1><hr><p>ini adalah keterangan dari marker<p>Informasi lebih lanjut...</div>'},
+        {coord:{lat: -5.390185339760058,lng:  105.1930932641601}, info:'<div class="info"><h1>Title Marker</h1><hr><p>ini adalah keterangan dari marker<p>Informasi lebih lanjut...</div>'},
+        {coord:{lat: -5.407617124132175,lng:  105.22776886230463}, info:'<div class="info"><h1>Title Marker</h1><hr><p>ini adalah keterangan dari marker<p>Informasi lebih lanjut...</div>'},
+        {coord:{lat: -5.407958918812655,lng:  105.23566528564447}, info:'<div class="info"><h1>Title Marker</h1><hr><p>ini adalah keterangan dari marker<p>Informasi lebih lanjut...</div>'},
+        {coord:{lat: -5.3966795925120765,lng:  105.23051544433588}, info:'<div class="info"><h1>Title Marker</h1><hr><p>ini adalah keterangan dari marker<p>Informasi lebih lanjut...</div>'},
+        {coord:{lat: -5.389843535058937,lng:  105.23875519042963}, info:'<div class="info"><h1>Title Marker</h1><hr><p>ini adalah keterangan dari marker<p>Informasi lebih lanjut...</div>'},
+        {coord:{lat: -5.391552556640427,lng:  105.3087930322265}, info:'<div class="info"><h1>Title Marker</h1><hr><p>ini adalah keterangan dari marker<p>Informasi lebih lanjut...</div>'},
+        {coord:{lat: -5.373094869269147,lng:  105.3084497094726}, info:'<div class="info"><h1>Title Marker</h1><hr><p>ini adalah keterangan dari marker<p>Informasi lebih lanjut...</div>'},
+        {coord:{lat: -5.3515601939455895,lng:  105.25592132812494}, info:'<div class="info"><h1>Title Marker</h1><hr><p>ini adalah keterangan dari marker<p>Informasi lebih lanjut...</div>'},
+        {coord:{lat: -5.341305319970651,lng:  105.26141449218744}, info:'<div class="info"><h1>Title Marker</h1><hr><p>ini adalah keterangan dari marker<p>Informasi lebih lanjut...</div>'},
+        {coord:{lat: -5.33788699049508,lng:  105.24356170898432}, info:'<div class="info"><h1>Title Marker</h1><hr><p>ini adalah keterangan dari marker<p>Informasi lebih lanjut...</div>'},
+        {coord:{lat: -5.352585671892256,lng:  105.20854278808588}, info:'<div class="info"><h1>Title Marker</h1><hr><p>ini adalah keterangan dari marker<p>Informasi lebih lanjut...</div>'},
+        {coord:{lat: -5.358396681098461,lng:  105.20201965576166}, info:'<div class="info"><h1>Title Marker</h1><hr><p>ini adalah keterangan dari marker<p>Informasi lebih lanjut...</div>'},
+        {coord:{lat: -5.365574910263112,lng:  105.20922943359369}, info:'<div class="info"><h1>Title Marker</h1><hr><p>ini adalah keterangan dari marker<p>Informasi lebih lanjut...</div>'},
+        {coord:{lat: -5.37651300177438,lng:  105.21334930664057}, info:'<div class="info"><h1>Title Marker</h1><hr><p>ini adalah keterangan dari marker<p>Informasi lebih lanjut...</div>'}
+      ];
+    //   google.maps.event.addDomListener(window, 'load', initMap);
+    </script>
+    <script async defer 
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBqIy-vX5tDUpnN5EUuIVG5fNeEuHWm3q4&callback=initMap"></script>
+    <script src="src/markerclusterer.js">
+    </script>
+</html>

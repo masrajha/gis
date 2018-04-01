@@ -1,0 +1,113 @@
+<html>
+    <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>My Web GIS</title>
+            <link rel="stylesheet" href="src/style.css">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.css" />
+    </head>
+    <body>
+        <div class="container">
+            <h1 class="header">Sistem Informasi Geografis</h1>
+            <div class="wrapper animated bounceInLeft">
+                <div class="menu">
+                    <ul>
+                        <li><a href="?">Home</a></li>
+                        <li><a href="?">View All Data</a></li>
+                        <li><a href="?">View Data Kategori 1</a></li>
+                        <li><a href="?">View Data Kategori 2</a></li>
+                    </ul>
+                </div>
+                <div class="add-marker">         
+                <div class="map" id="map"></div>
+                    <h3>Input Data Marker</h3>
+                    <form>
+                        <p>
+                            <label>Lat</label>
+                            <input type="text" name="lat" id="lat">
+                        </p>
+                        <p>
+                            <label>Lng</label>
+                            <input type="text" name="lng" id="lng">
+                        </p>
+                        <p class="full">
+                            <label>Info Marker</label>
+                            <textarea name="info" name="info" id="info"  rows="5"></textarea>
+                        </p>
+                        <p class="full">
+                            <div class="alert" id="alert">Data sudah disimpan</div>
+                        </p>
+                        <p class="full">
+                            <input class="button" id="save" type="button" value="save">
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+      <script>
+       var map=null;
+       function initMap(){
+            document.getElementById("save").disabled = true;
+            var ilkom = {lat:-5.367284,lng:105.244935};
+            map=new google.maps.Map(document.getElementById('map'),{zoom:11,center:ilkom});
+            console.log(map);
+            marker=createMarker(ilkom,'<h3>Jurusan Ilmu Komputer</h3><hr>'+
+                                 '<p><a href="http://ilkom.unila.ac.id" target="blank">http://ilkom.unila.ac.id</a>');
+            marker.setMap(map);
+            google.maps.event.addListener(map, "click", function (e) {
+                // //lat and lng is available in e object
+                var latLng = e.latLng;
+                marker.setPosition(latLng);
+                // // console.log(marker.getPosition().lat());
+                setValue('lat',latLng.lat());
+                setValue('lng',latLng.lng());
+                document.getElementById("save").disabled = false;
+                // createMarker(e.latLng);
+                // coord={lat:latLng.lat(),lng:latLng.lng()};
+                // saveMarker(coord);
+                 });
+        }
+        function createMarker(coords,contentString=null,imageIcon=null){
+           // var marker=new google.maps.Marker({position:coords,map:map});
+           var marker=new google.maps.Marker({position:coords,icon:imageIcon});
+            if(contentString){
+                var infowindow = new google.maps.InfoWindow();
+                infowindow.setContent(contentString);
+                marker.addListener('click',function(){
+                    infowindow.open(map,marker);
+                });
+            }
+            console.log(marker);
+            return marker;
+        }
+        function setValue(id,val){
+            document.getElementById(id).value=val;
+        }
+
+        document.getElementById("save").addEventListener("click",function(){
+            // console.log("save click");
+            lat=parseFloat(document.getElementById('lat').value);
+            lng=parseFloat(document.getElementById('lng').value);
+            coord={lat:lat,lng:lng};
+            var info=null;
+            if (document.getElementById('info').value){
+                info=document.getElementById('info').value;
+            }
+            saveMarker(coord, info);
+            document.getElementById("save").disabled = true;
+            document.querySelector('.alert').style.display='block';
+            document.getElementById("alert").innerHTML = "Data Disimpan ke Firebase";
+            setTimeout(function(){
+                document.querySelector('.alert').style.display='none';
+            },3000);
+
+        });
+      </script>  
+    </body>
+    <script async defer 
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBqIy-vX5tDUpnN5EUuIVG5fNeEuHWm3q4&callback=initMap"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase.js"></script>
+    <script src="src/markerclusterer.js"></script>
+    <script src="src/main.js"></script>
+</html>
