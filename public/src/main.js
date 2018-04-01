@@ -25,20 +25,31 @@
     console.log(newMarkerRef);
   }
   markerRef.on('value',getData,showError);
+
   function getData(data){
     var markers=[];
     var marker= data.val();
     var keys = Object.keys(data.val());
-    console.log(keys);
-    for (var i=0;i<keys.length;i++){
-      var k = keys[i];
-      // console.log(parseFloat(marker[k].coord.lat));
-      lat = parseFloat(marker[k].coord.lat);
-      lng = parseFloat(marker[k].coord.lng);
+    // console.log(keys);
+    data.forEach(function(datamarker) {
+      // console.log(datamarker.val().coord,datamarker.val().info);
+      lat = parseFloat(datamarker.val().coord.lat);
+      lng = parseFloat(datamarker.val().coord.lng);
+      info = datamarker.val().info;
+      console.log(lat,lng);
       loc = {lat:lat,lng:lng};
-      console.log(loc);
-      markers.push(createMarker(loc,marker[k].info,'images/placeholder.png'));
-    }
+      markers.push(createMarker(loc,info,'images/placeholder.png'));
+    });
+
+    // for (var i=0;i<keys.length;i++){
+    //   var k = keys[i];
+    //   // console.log(parseFloat(marker[k].coord.lat));
+    //   lat = parseFloat(marker[k].coord.lat);
+    //   lng = parseFloat(marker[k].coord.lng);
+    //   loc = {lat:lat,lng:lng};
+    //   // console.log(loc);
+    //   markers.push(createMarker(loc,marker[k].info,'images/placeholder.png'));
+    // }
     var markerCluster = new MarkerClusterer(map, markers,
       {imagePath: 'images/m'});
   }
@@ -85,7 +96,7 @@
                     infowindow.open(map,marker);
                 });
             }
-            console.log(marker);
+            // console.log(marker);
             return marker;
         }
         function setValue(id,val){
