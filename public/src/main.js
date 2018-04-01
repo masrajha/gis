@@ -1,5 +1,6 @@
 
-  // Initialize Firebase
+ 
+ // Initialize Firebase
   var config = {
     apiKey: "AIzaSyBCmIfe6uYdwYtS6c7ET-IDEOKMq_sbDsQ",
     authDomain: "latihan-168007.firebaseapp.com",
@@ -49,3 +50,63 @@
                 document.querySelector('.alert').style.display='none';
             },3000);
   }
+
+
+  //Map preparing
+  var map=null;
+       function initMap(){
+            document.getElementById("save").disabled = true;
+            var ilkom = {lat:-5.367284,lng:105.244935};
+            map=new google.maps.Map(document.getElementById('map'),{zoom:11,center:ilkom});
+            console.log(map);
+            marker=createMarker(ilkom,'<h3>Jurusan Ilmu Komputer</h3><hr>'+
+                                 '<p><a href="http://ilkom.unila.ac.id" target="blank">http://ilkom.unila.ac.id</a>');
+            marker.setMap(map);
+            google.maps.event.addListener(map, "click", function (e) {
+                // //lat and lng is available in e object
+                var latLng = e.latLng;
+                marker.setPosition(latLng);
+                // // console.log(marker.getPosition().lat());
+                setValue('lat',latLng.lat());
+                setValue('lng',latLng.lng());
+                document.getElementById("save").disabled = false;
+                // createMarker(e.latLng);
+                // coord={lat:latLng.lat(),lng:latLng.lng()};
+                // saveMarker(coord);
+                 });
+        }
+        function createMarker(coords,contentString=null,imageIcon=null){
+           // var marker=new google.maps.Marker({position:coords,map:map});
+           var marker=new google.maps.Marker({position:coords,icon:imageIcon});
+            if(contentString){
+                var infowindow = new google.maps.InfoWindow();
+                infowindow.setContent(contentString);
+                marker.addListener('click',function(){
+                    infowindow.open(map,marker);
+                });
+            }
+            console.log(marker);
+            return marker;
+        }
+        function setValue(id,val){
+            document.getElementById(id).value=val;
+        }
+
+        document.getElementById("save").addEventListener("click",function(){
+            // console.log("save click");
+            lat=parseFloat(document.getElementById('lat').value);
+            lng=parseFloat(document.getElementById('lng').value);
+            coord={lat:lat,lng:lng};
+            var info=null;
+            if (document.getElementById('info').value){
+                info=document.getElementById('info').value;
+            }
+            saveMarker(coord, info);
+            document.getElementById("save").disabled = true;
+            document.querySelector('.alert').style.display='block';
+            document.getElementById("alert").innerHTML = "Data Disimpan ke Firebase";
+            setTimeout(function(){
+                document.querySelector('.alert').style.display='none';
+            },3000);
+
+        });
