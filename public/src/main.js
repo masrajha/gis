@@ -28,19 +28,19 @@
 
   function getData(data){
     var markers=[];
-    var marker= data.val();
-    var keys = Object.keys(data.val());
+    
     // console.log(keys);
     data.forEach(function(datamarker) {
       // console.log(datamarker.val().coord,datamarker.val().info);
       lat = parseFloat(datamarker.val().coord.lat);
       lng = parseFloat(datamarker.val().coord.lng);
       info = datamarker.val().info;
-      console.log(lat,lng);
+      // console.log(datamarker.key);
       loc = {lat:lat,lng:lng};
       markers.push(createMarker(loc,info,'images/placeholder.png'));
     });
-
+    // var marker= data.val();
+    // var keys = Object.keys(data.val());
     // for (var i=0;i<keys.length;i++){
     //   var k = keys[i];
     //   // console.log(parseFloat(marker[k].coord.lat));
@@ -65,12 +65,14 @@
 
   //Map preparing
   var map=null;
+  var center =  {lat:-5.367284,lng:105.244935};
        function initMap(){
             document.getElementById("save").disabled = true;
-            var ilkom = {lat:-5.367284,lng:105.244935};
-            map=new google.maps.Map(document.getElementById('map'),{zoom:11,center:ilkom});
+            getLocation();
+            console.log(center);
+            map=new google.maps.Map(document.getElementById('map'),{zoom:11,center:center});
             console.log(map);
-            marker=createMarker(ilkom,'<h3>Jurusan Ilmu Komputer</h3><hr>'+
+            marker=createMarker(center,'<h3>Jurusan Ilmu Komputer</h3><hr>'+
                                  '<p><a href="http://ilkom.unila.ac.id" target="blank">http://ilkom.unila.ac.id</a>');
             marker.setMap(map);
             google.maps.event.addListener(map, "click", function (e) {
