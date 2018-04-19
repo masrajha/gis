@@ -44,7 +44,7 @@ var config = {
 firebase.initializeApp(config);
 
 var db              = firebase.database();
-var dataRef         = db.ref('cobba');
+var dataRef         = db.ref('SIG2018');
 var newPolygon      = null;
 var arrayPolygon    = [];
 var map             = null;
@@ -75,6 +75,54 @@ function createMarker(coord){
         }
     );
     return marker;
+}
+
+document.getElementById("save").addEventListener("click",function(){
+    var lines = {points:coords};
+    arrayPolygon.forEach(function(data) {
+        data.setMap(null);
+    });
+    markers.forEach(function(data){
+        data.setMap(null);
+    });
+
+    dataRef.push(
+        {
+            type: 'polyline',
+            geometry: lines
+        }
+    );
+    coords = [];
+});
+
+function updateInfo(data){
+    data.forEach(function(datamarker) {
+        arrayPolygon.push(createPolygon(datamarker.val().geometry.points));
+    });
+}
+function showErr(err){
+    console.log(err);
+}
+
+function createPolygon(coord){
+    var tempPoly = new google.maps.Polygon({
+        paths: coord,
+        strokeColor: '#FF0000',
+        strokeOpacity: 0.8,
+        strokeWeight: 1,
+        fillColor: '#0000FF',
+        fillOpacity: 0.35
+    });
+    tempPoly.setMap(map);
+    return tempPoly;
+}
+function updateInfo(data){
+    data.forEach(function(datamarker) {
+        arrayPolygon.push(createPolygon(datamarker.val().geometry.points));
+    });
+}
+function showErr(err){
+    console.log(err);
 }
 
 </script>
