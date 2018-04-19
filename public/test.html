@@ -17,4 +17,17 @@
         <li></li>
     </ul>
 </body>
+<script>
+    var xmlDoc = new XMLHttpRequest();
+    xmlDoc.open("GET","data/unila.xml",false);
+    xmlDoc.setRequestHeader("Content-type","text/xml");
+    xmlDoc.send(null);
+    var myXmlDoc = xmlDoc.responseXML;
+    var node = myXmlDoc.childNodes[0];
+    console.log(myXmlDoc.children.length);
+    // for (var i=0;i<myXmlDoc.children.length;i++){
+    //     var lat = myXmlDoc.getElementsByName("lat");
+    //     console.log(lat);
+    // }
+</script>
 </html>
